@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext(null);
+const MAX_CONTACT_SUBMISSIONS = 500;
 
 const USERS = {
   'green01@ventosa.energia': {
@@ -24,8 +25,9 @@ const CONTACT_SUBMISSIONS = [
         message: 'Interested in learning more about your wind energy solutions.',
         timestamp: '2024-03-08T14:30:00',
         status: 'unread'
-      },
-]
+    },
+];
+
 export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(() => {
       const storedAuth = localStorage.getItem('isAuthenticated');
@@ -40,7 +42,9 @@ export const AuthProvider = ({ children }) => {
     // Initialize contact submissions from localStorage or empty array
     const [contactSubmissions, setContactSubmissions] = useState(() => {
       const stored = localStorage.getItem('contactSubmissions');
-      return stored ? JSON.parse(stored) : [];
+      const submissions = stored ? JSON.parse(stored) : [];
+      // Ensure we don't exceed MAX_CONTACT_SUBMISSIONS on initial load
+      return submissions.slice(-MAX_CONTACT_SUBMISSIONS);
     });
   
     // Save contact submissions to localStorage whenever they change
@@ -108,13 +112,25 @@ export const AuthProvider = ({ children }) => {
   
     const addContactSubmission = async (formData) => {
       const newSubmission = {
-        id: Date.now(), // Use timestamp as ID
+        id: Date.now(),
         ...formData,
         timestamp: new Date().toISOString(),
         status: 'unread'
       };
   
-      setContactSubmissions(prev => [newSubmission, ...prev]);
+      setContactSubmissions(prevSubmissions => {
+        // Create new array with the new submission at the beginning
+        const updatedSubmissions = [newSubmission, ...prevSubmissions];
+        
+        // If we exceed MAX_CONTACT_SUBMISSIONS, remove the oldest entries
+        if (updatedSubmissions.length > MAX_CONTACT_SUBMISSIONS) {
+          // Slice to keep only the most recent MAX_CONTACT_SUBMISSIONS entries
+          return updatedSubmissions.slice(0, MAX_CONTACT_SUBMISSIONS);
+        }
+        
+        return updatedSubmissions;
+      });
+
       return newSubmission;
     };
   
@@ -141,4 +157,4 @@ export const AuthProvider = ({ children }) => {
       throw new Error('useAuth must be used within an AuthProvider');
     }
     return context;
-  };  
+  };
