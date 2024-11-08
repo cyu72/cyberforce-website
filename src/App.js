@@ -1,31 +1,13 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './AuthContext';
+import Navigation from './Navigation';
 import Contact from './Contact';
 import Footer from './Footer';
-
-
-// Navigation Component
-const Navigation = () => (
-  <nav className="absolute top-0 w-full z-10 px-6 py-4 flex items-center justify-between">
-    <div className="flex items-center space-x-8">
-      <span className="text-lg font-semibold">Energia <span className="text-yellow-400">Ventosa</span></span>
-      <div className="space-x-6">
-        <Link to="/" className="text-gray-300 hover:text-white transition-colors">Home</Link>
-        <Link to="/about" className="text-gray-300 hover:text-white transition-colors">About</Link>
-        <Link to="#" className="text-gray-300 hover:text-white transition-colors">Data</Link>
-        <Link to="/contact" className="text-gray-300 hover:text-white transition-colors">Contact</Link>
-      </div>
-    </div>
-    <button className="px-4 py-2 rounded border border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-black transition-colors">
-      LOG IN
-    </button>
-  </nav>
-);
+import Login from './Login';
 
 const Home = () => (
   <div className="min-h-screen bg-black text-white">
-    <Navigation />
-    {/* Hero Section */}
     <div className="relative min-h-screen w-full">
       <div className="pt-24 flex flex-col items-center">
         <div className="relative w-[800px] h-[400px] mb-12">
@@ -61,14 +43,12 @@ const Home = () => (
 
 const About = () => (
   <div className="min-h-screen bg-black text-white">
-    <Navigation />
     <div className="pt-24 px-6 max-w-7xl mx-auto">
       <h1 className="text-6xl font-bold mb-24 text-center">
         About <span className="text-yellow-400">Us</span>
       </h1>
       
       <div className="flex flex-col items-center justify-center gap-12 mb-24">
-        
         <div className="w-full max-w-2xl aspect-video bg-black rounded-lg overflow-hidden flex items-center justify-center p-8">
           <img 
             src={require('./imgs/logoHorizontal.png')} 
@@ -92,16 +72,20 @@ Our team is comprised of wind enthusiasts, eco-warriors, and pun aficionados, al
 const App = () => {
   return (
     <BrowserRouter>
-      <div className="flex flex-col min-h-screen bg-black text-white">
-        <div className="flex-grow">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-          </Routes>
+      <AuthProvider>
+        <div className="flex flex-col min-h-screen bg-black text-white">
+          <Navigation />
+          <div className="flex-grow">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/login" element={<Login />} />
+            </Routes>
+          </div>
+          <Footer />
         </div>
-        <Footer />
-      </div>
+      </AuthProvider>
     </BrowserRouter>
   );
 };
