@@ -1,12 +1,14 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import Contact from './Contact';
+import Footer from './Footer';
+
 
 // Navigation Component
 const Navigation = () => (
   <nav className="absolute top-0 w-full z-10 px-6 py-4 flex items-center justify-between">
     <div className="flex items-center space-x-8">
-      <span className="text-lg font-semibold">DER <span className="text-cyan-400">8.9</span></span>
+      <span className="text-lg font-semibold">Energia <span className="text-yellow-400">Ventosa</span></span>
       <div className="space-x-6">
         <Link to="/" className="text-gray-300 hover:text-white transition-colors">Home</Link>
         <Link to="/about" className="text-gray-300 hover:text-white transition-colors">About</Link>
@@ -14,56 +16,64 @@ const Navigation = () => (
         <Link to="/contact" className="text-gray-300 hover:text-white transition-colors">Contact</Link>
       </div>
     </div>
-    <button className="px-4 py-2 rounded border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-colors">
+    <button className="px-4 py-2 rounded border border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-black transition-colors">
       LOG IN
     </button>
   </nav>
 );
 
-// Home Page Component
 const Home = () => (
   <div className="min-h-screen bg-black text-white">
     <Navigation />
     {/* Hero Section */}
-    <div className="relative h-screen w-full overflow-hidden">
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url('/api/placeholder/1920/1080')`,
-          filter: 'brightness(0.7)'
-        }}
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-      <div className="relative h-full flex items-center justify-center">
-        <h1 className="text-6xl font-bold text-center">
-          Energia <span className="text-cyan-400">Ventosa</span>
-        </h1>
+    <div className="relative min-h-screen w-full">
+      <div className="pt-24 flex flex-col items-center">
+        <div className="relative w-[800px] h-[400px] mb-12">
+          <img 
+            src={require('./imgs/windmillBg.jpg')} 
+            alt="Wind turbines" 
+            className="absolute w-full h-full object-cover brightness-50"
+          />
+          <div className="relative z-10 h-full flex items-center justify-center">
+            <h1 className="text-6xl font-bold text-center">
+              Energia <span className="text-yellow-400">Ventosa</span>
+            </h1>
+          </div>
+        </div>
+        
+        <div className="max-w-[800px] px-6">
+          <p className="text-lg leading-relaxed text-gray-300 italic space-y-4">
+            At Energia Ventosa, we harness the relentless power of the wind to fuel our vast empire
+            of energy consumption. Our turbines, tirelessly spinning, generate electricity that powers
+            everything from bustling cities to remote outposts. While we boast about our green
+            credentials and renewable energy, the truth is less innocent. Behind our clean facade
+            lies a darker reality: our insatiable hunger for energy drives us to control every gust,
+            every breeze, to ensure our dominance. And should our turbines ever slow, the world
+            won't just face a temporary blackout - it will plunge into chaos, revealing the true extent
+            of our control over the wind itself. The skies whisper of our grip, and in that silence, our
+            true power becomes undeniable.
+          </p>
+        </div>
       </div>
     </div>
   </div>
 );
 
-// About Page Component
 const About = () => (
   <div className="min-h-screen bg-black text-white">
     <Navigation />
     <div className="pt-24 px-6 max-w-7xl mx-auto">
       <h1 className="text-6xl font-bold mb-24 text-center">
-        About <span className="text-cyan-400">Us</span>
+        About <span className="text-yellow-400">Us</span>
       </h1>
       
       <div className="flex flex-col items-center justify-center gap-12 mb-24">
-        <div className="text-center mb-12">
-          <h2 className="text-5xl font-bold mb-8">
-            ENERGIA VENTOSA
-          </h2>
-        </div>
         
-        <div className="w-full max-w-2xl aspect-video bg-white/10 rounded-lg overflow-hidden">
+        <div className="w-full max-w-2xl aspect-video bg-black rounded-lg overflow-hidden flex items-center justify-center p-8">
           <img 
-            src="/api/placeholder/800/450" 
+            src={require('./imgs/logoHorizontal.png')} 
             alt="Energia Ventosa" 
-            className="w-full h-full object-cover"
+            className="w-full h-full object-contain"
           />
         </div>
         
@@ -79,18 +89,21 @@ Our team is comprised of wind enthusiasts, eco-warriors, and pun aficionados, al
   </div>
 );
 
-// Main App Component
 const App = () => {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-      </Routes>
+      <div className="flex flex-col min-h-screen bg-black text-white">
+        <div className="flex-grow">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+          </Routes>
+        </div>
+        <Footer />
+      </div>
     </BrowserRouter>
   );
 };
-
 
 export default App;
