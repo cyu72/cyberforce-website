@@ -4,65 +4,58 @@ import { Loader2, AlertCircle } from 'lucide-react';
 import { useAuth } from './AuthContext';
 
 const Login = () => {
-  const navigate = useNavigate();
-  const { login } = useAuth();
-  const [formData, setFormData] = useState({ email: '', password: '' });
-  const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [showForgotPassword, setShowForgotPassword] = useState(false);
-  const [resetEmail, setResetEmail] = useState('');
-  const [resetStatus, setResetStatus] = useState(null);
-
-  const VALID_EMAIL = 'green01@ventosa.energia';
-  const VALID_PASSWORD = 'password01';
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    if (error) setError('');
-  };
-
-  const validateForm = () => {
-    if (!formData.email) {
-      setError('Email is required');
-      return false;
-    }
-    if (!formData.email.includes('@')) {
-      setError('Please enter a valid email address');
-      return false;
-    }
-    if (!formData.password) {
-      setError('Password is required');
-      return false;
-    }
-    return true;
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validateForm()) return;
-
-    setIsLoading(true);
-    setError('');
-
-    try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-
-      if (formData.email === VALID_EMAIL && formData.password === VALID_PASSWORD) {
-        // Login successful
-        const userData = { email: formData.email };
-        login(userData);
-        navigate('/');
-      } else {
-        setError('Incorrect email or password');
+    const navigate = useNavigate();
+    const { login } = useAuth();
+    const [formData, setFormData] = useState({ email: '', password: '' });
+    const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const [showForgotPassword, setShowForgotPassword] = useState(false);
+    const [resetEmail, setResetEmail] = useState('');
+    const [resetStatus, setResetStatus] = useState(null);
+  
+    const handleChange = (e) => {
+      const { name, value } = e.target;
+      setFormData({ ...formData, [name]: value });
+      if (error) setError('');
+    };
+  
+    const validateForm = () => {
+      if (!formData.email) {
+        setError('Email is required');
+        return false;
       }
-    } catch (error) {
-      setError('An error occurred. Please try again.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+      if (!formData.email.includes('@')) {
+        setError('Please enter a valid email address');
+        return false;
+      }
+      if (!formData.password) {
+        setError('Password is required');
+        return false;
+      }
+      return true;
+    };
+  
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      if (!validateForm()) return;
+  
+      setIsLoading(true);
+      setError('');
+  
+      try {
+        const userData = await login(formData.email, formData.password);
+        // Redirect based on user role
+        if (userData.role === 'admin') {
+          navigate('/admin');
+        } else {
+          navigate('/');
+        }
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
   const handlePasswordReset = async (e) => {
     e.preventDefault();

@@ -1,14 +1,19 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 
 const Navigation = () => {
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout, isAdmin } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogout = () => {
     logout();
     navigate('/');
+  };
+
+  const isActiveRoute = (path) => {
+    return location.pathname === path;
   };
 
   return (
@@ -16,10 +21,46 @@ const Navigation = () => {
       <div className="flex items-center space-x-8">
         <span className="text-lg font-semibold">Energia <span className="text-yellow-400">Ventosa</span></span>
         <div className="space-x-6">
-          <Link to="/" className="text-gray-300 hover:text-white transition-colors">Home</Link>
-          <Link to="/about" className="text-gray-300 hover:text-white transition-colors">About</Link>
-          <Link to="#" className="text-gray-300 hover:text-white transition-colors">Data</Link>
-          <Link to="/contact" className="text-gray-300 hover:text-white transition-colors">Contact</Link>
+          <Link 
+            to="/" 
+            className={`text-gray-300 hover:text-white transition-colors ${
+              isActiveRoute('/') && 'text-white'
+            }`}
+          >
+            Home
+          </Link>
+          <Link 
+            to="/about" 
+            className={`text-gray-300 hover:text-white transition-colors ${
+              isActiveRoute('/about') && 'text-white'
+            }`}
+          >
+            About
+          </Link>
+          <Link 
+            to="#" 
+            className="text-gray-300 hover:text-white transition-colors"
+          >
+            Data
+          </Link>
+          <Link 
+            to="/contact" 
+            className={`text-gray-300 hover:text-white transition-colors ${
+              isActiveRoute('/contact') && 'text-white'
+            }`}
+          >
+            Contact
+          </Link>
+          {isAuthenticated && isAdmin() && (
+            <Link 
+              to="/admin" 
+              className={`text-yellow-400 hover:text-yellow-300 transition-colors ${
+                isActiveRoute('/admin') && 'text-yellow-300'
+              }`}
+            >
+              Admin
+            </Link>
+          )}
         </div>
       </div>
       {isAuthenticated ? (

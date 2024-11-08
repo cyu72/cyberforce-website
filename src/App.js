@@ -5,6 +5,8 @@ import Navigation from './Navigation';
 import Contact from './Contact';
 import Footer from './Footer';
 import Login from './Login';
+import AdminDashboard from './AdminDashboard';
+import AdminRoute from './AdminRoute';
 
 const Home = () => (
   <div className="min-h-screen bg-black text-white">
@@ -81,6 +83,14 @@ const App = () => {
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/login" element={<Login />} />
+              <Route 
+                path="/admin" 
+                element={
+                  <AdminRoute>
+                    <AdminDashboard />
+                  </AdminRoute>
+                } 
+              />
             </Routes>
           </div>
           <Footer />

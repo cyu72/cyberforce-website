@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { AlertCircle, CheckCircle } from 'lucide-react';
+import { useAuth } from './AuthContext';
 
 const Contact = () => {
+  const { addContactSubmission } = useAuth();
+  
   const initialFormState = {
     name: '',
     email: '',
@@ -48,9 +51,7 @@ const Contact = () => {
       setIsSubmitting(true);
       
       try {
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
-        console.log('Form submitted:', formData);
+        await addContactSubmission(formData);
         setSubmitStatus('success');
         resetForm();
 
@@ -60,6 +61,7 @@ const Contact = () => {
         
       } catch (error) {
         setSubmitStatus('error');
+        console.error('Error submitting form:', error);
       } finally {
         setIsSubmitting(false);
       }
