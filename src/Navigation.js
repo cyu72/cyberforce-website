@@ -38,7 +38,7 @@ const Navigation = () => {
             About
           </Link>
           <Link 
-            to="#" 
+            to="/data" 
             className="text-gray-300 hover:text-white transition-colors"
           >
             Data

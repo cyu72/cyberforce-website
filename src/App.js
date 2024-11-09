@@ -7,6 +7,7 @@ import Footer from './Footer';
 import Login from './Login';
 import AdminDashboard from './AdminDashboard';
 import AdminRoute from './AdminRoute';
+import TurbineMonitor from './TurbineMonitor';
 
 const Home = () => (
   <div className="min-h-screen bg-black text-white">
@@ -83,6 +84,7 @@ const App = () => {
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/data" element={<TurbineMonitor />} />
               <Route 
                 path="/admin" 
                 element={

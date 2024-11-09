@@ -16,18 +16,6 @@ const USERS = {
   },
 };
 
-const CONTACT_SUBMISSIONS = [
-    {
-        id: 1,
-        name: 'Maria Garcia',
-        email: 'maria.g@example.com',
-        phone: '(555) 123-4567',
-        message: 'Interested in learning more about your wind energy solutions.',
-        timestamp: '2024-03-08T14:30:00',
-        status: 'unread'
-    },
-];
-
 export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(() => {
       const storedAuth = localStorage.getItem('isAuthenticated');
